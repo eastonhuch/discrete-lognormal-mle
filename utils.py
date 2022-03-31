@@ -79,7 +79,7 @@ def get_predictors():
     )
 
     # Day of week
-    day_of_week = pd.get_dummies(df.day_of_week, prefix="day_of_week")
+    day_of_week = pd.get_dummies(df.day_of_week, prefix="day_of_week", drop_first=True)
 
     # Seasonality
     seasonality = df.assign(
@@ -105,7 +105,7 @@ def get_coefs():
     # Set beta
     beta_intercept = [5.]
     beta_trends = [0.4, -0.17]
-    beta_day_of_week = [-0.3, 0.03, 0.06, 0.1, 0.09, -0.04, -0.23]
+    beta_day_of_week = [0.33, 0.36, 0.4, 0.39, 0.26, 0.07] # Sunday is omitted
     beta_seasonality = [0.2, -0.1]
     beta = np.array(
         beta_intercept +
@@ -116,7 +116,7 @@ def get_coefs():
     # Set alpha
     alpha_intercept = [-1.]
     alpha_trends = [-0.2, -0.03]
-    alpha_day_of_week = [-0.3, 0.03, 0.06, 0.1, 0.09, -0.04, -0.23]
+    alpha_day_of_week = [0.33, 0.36, 0.4, 0.39, 0.26, 0.07] # Sunday is omitted
     alpha_seasonality = [0.16, -0.05]
     alpha = np.array(
         alpha_intercept +
