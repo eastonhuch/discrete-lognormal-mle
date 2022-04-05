@@ -123,7 +123,7 @@ class DiscreteLognormal(GenericLikelihoodModel):
 
         return H_all - penalty_matrix
     
-    def predict(self, params, exog=None, n=1000):
+    def predict(self, params, exog=None, n=1000, return_variance=False):
         if exog is None:
             X = self.exog
         else:
@@ -133,9 +133,16 @@ class DiscreteLognormal(GenericLikelihoodModel):
         alph = params[11:] #last 11 are for sigma
         mu = (np.dot(X, beta))
         sigma = np.exp(np.dot(X, alph))
-        Z = stats.norm(mu,sigma).rvs(size = (n, self.endog.size)) # n random realizations. Could find closed form..
-        Y_hat = np.floor(np.exp(Z)).mean(axis=0)
-        return Y_hat
+        z = stats.norm(mu, sigma).rvs(size = (n, self.endog.size)) # n random realizations. Could find closed form..
+        y = np.floor(np.exp(z))
+        
+        if return_variance:
+            var_y = np.var(y, axis=0)
+            return var_y
+        else:
+            mean_y = np.mean(y, axis=0)
+            return mean_y
+
     
     def mse(self):
         r = self.endog - self.predict()
@@ -150,7 +157,7 @@ class DiscreteLognormal(GenericLikelihoodModel):
             start_params[0] = np.log(np.mean(self.endog)) # beta intercept
 
         if method == "EM":  
-            print("Using EM algorithm")
+#             print("Using EM algorithm")
             self.em(
                 start_params=start_params,
                 maxiter=maxiter,
@@ -201,7 +208,7 @@ class DiscreteLognormal(GenericLikelihoodModel):
         converged = False
         
         for i in range(maxiter):
-            print(f"Iteration {i} loss: {loss}")
+#             print(f"Iteration {i} loss: {loss}")
             loss_last = loss.copy()
             self.update_expectations()
                                     
