@@ -1,6 +1,8 @@
 # Repo-specific files
 plots
 plots/*
+.DS_Store
+.DS_store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
