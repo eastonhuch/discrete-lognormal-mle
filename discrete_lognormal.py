@@ -7,6 +7,7 @@ from scipy import stats
 from statsmodels.base.model import GenericLikelihoodModel
 
 def _ll_latentnorm(y, X, beta, alph):
+    # log-like of DLN model
     mu = (np.dot(X, beta))
     sigma = np.exp(np.dot(X, alph))
     z_bar = (np.log1p(y) - mu) / sigma 
@@ -17,7 +18,8 @@ def _ll_latentnorm(y, X, beta, alph):
 def _get_kappa(z_bar, z_underbar, q):
     # Log denominator
     log_den = stats.norm.logcdf(z_underbar) + np.log(np.exp(stats.norm.logcdf(z_bar) - stats.norm.logcdf(z_underbar)) - 1.)
-
+    
+    # Transformations to avoid catastrophic cancellation
     # Witchcraft to get the numerator
     z_bar_pos = ((z_bar)**q) > 0
     z_underbar_pos = ((z_underbar)**q) > 0
