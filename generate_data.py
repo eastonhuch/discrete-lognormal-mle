@@ -1,3 +1,4 @@
+# Generates simulation data for time-series count data with decoupled mean and variance
 import numpy as np
 import pandas as pd
 from scipy.stats import norm

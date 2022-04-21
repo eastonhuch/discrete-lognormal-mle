@@ -1,3 +1,6 @@
+# Defines extension of the GenericLikelihoodModel for our Discrete Log Normal model.
+# Extends fitting ability by implementing EM algorithm as a method
+
 import pandas as pd
 import numpy as np
 from scipy import stats
